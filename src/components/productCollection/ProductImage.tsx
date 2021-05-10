@@ -10,7 +10,7 @@ interface PropsType {
 
 export const ProductImage: React.FC<PropsType> = ({id, size, imageSrc, title, price}) => {
     return <>
-        {size=="large" ? (
+        {size==="large" ? (
             <Image src={imageSrc} height={285} width={490} />
         ) : (
             <Image  src={imageSrc} height={120} width={240} />
