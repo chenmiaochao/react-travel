@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 import styles from "./Header.module.css";
-import logo from '../..//assets/logo.svg';
+import logo from "../../assets/logo.svg";
 import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
-import { GlobalOutlined } from '@ant-design/icons';
+import { GlobalOutlined } from "@ant-design/icons";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import store from "../../redux/store";
 import { LanguageState } from "../../redux/languageReducer";
 
 interface State extends LanguageState {}
 
-class HeaderComponent extends React.Component<RouteComponentProps>{
+class HeaderComponnet extends React.Component<RouteComponentProps, State> {
   
-  constructor(props) {
+  constructor(props){
     super(props);
     const storeState = store.getState();
     this.state = {
@@ -23,38 +23,41 @@ class HeaderComponent extends React.Component<RouteComponentProps>{
   render() {
     const { history } = this.props;
     return (
-      <div className={styles['app-header']}>
+      <div className={styles["app-header"]}>
         {/* top-header */}
-        <div className={styles['top-herader']}>
+        <div className={styles["top-header"]}>
           <div className={styles.inner}>
             <Typography.Text>让旅游更幸福</Typography.Text>
             <Dropdown.Button
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: 15 }}
               overlay={
                 <Menu>
                   {this.state.languageList.map((l) => {
-                    return <Menu.Item key={l.code}>{l.name}</Menu.Item>
+                    return <Menu.Item key={l.code}>{l.name}</Menu.Item>;
                   })}
                 </Menu>
               }
               icon={<GlobalOutlined />}
             >
-              {this.state.language === "zh" ? "中文" : "English"};
+              {this.state.language === "zh" ? "中文" : "English"}
             </Dropdown.Button>
-            <Button.Group className={styles['button-gruop']}>
+            <Button.Group className={styles["button-group"]}>
               <Button onClick={() => history.push("register")}>注册</Button>
               <Button onClick={() => history.push("signIn")}>登陆</Button>
             </Button.Group>
           </div>
         </div>
-        <Layout.Header className={styles['main-header']}>
+        <Layout.Header className={styles["main-header"]}>
           <span onClick={() => history.push("/")}>
-            <img src={logo} alt="" className={styles['App-logo']} />
-            <Typography.Title level={3} className={styles['title']}>
-              React 旅游网
-          </Typography.Title>
+            <img src={logo} alt="logo" className={styles["App-logo"]} />
+            <Typography.Title level={3} className={styles.title}>
+              React旅游网
+            </Typography.Title>
           </span>
-          <Input.Search placeholder={'请输入旅游目的地，主题，或关键字'} className={styles['search-input']}></Input.Search>
+          <Input.Search
+            placeholder={"请输入旅游目的地、主题、或关键字"}
+            className={styles["search-input"]}
+          />
         </Layout.Header>
         <Menu mode={"horizontal"} className={styles["main-menu"]}>
           <Menu.Item key={1}>旅游首页</Menu.Item>
@@ -75,8 +78,8 @@ class HeaderComponent extends React.Component<RouteComponentProps>{
           <Menu.Item key="16"> 保险 </Menu.Item>
         </Menu>
       </div>
-    )
+    );
   }
 }
 
-export const Header = withRouter(HeaderComponent);
+export const Header = withRouter(HeaderComponnet);
