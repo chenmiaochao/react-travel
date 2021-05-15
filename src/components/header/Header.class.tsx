@@ -51,7 +51,6 @@ class HeaderComponnet extends React.Component<PropsType>{
     }else{
       this.props.changeLanguage(e.key)
     }
-
   }
 
   render() {
