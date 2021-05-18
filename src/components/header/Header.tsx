@@ -1,14 +1,22 @@
-import React from 'react';
+import React from "react";
 import styles from "./Header.module.css";
-import logo from '../..//assets/logo.svg';
-import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd"
-import { GlobalOutlined } from '@ant-design/icons'
-import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom"
-import { RootState } from '../../redux/store';
-import { useSelector } from '../../redux/hooks';
-import { useDispatch } from 'react-redux';
-import { addLanguageActionCreator, changeLanguageActionCreator } from "../../redux/language/languageActions";
-import { useTranslation } from 'react-i18next'
+import logo from "../..//assets/logo.svg";
+import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
+import { GlobalOutlined } from "@ant-design/icons";
+import {
+  useHistory,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
+import { RootState } from "../../redux/store";
+import { useSelector } from "../../redux/hooks";
+import { useDispatch } from "react-redux";
+import {
+  addLanguageActionCreator,
+  changeLanguageActionCreator,
+} from "../../redux/language/languageActions";
+import { useTranslation } from "react-i18next";
 
 export const Header: React.FC = () => {
   const history = useHistory();
@@ -29,10 +37,10 @@ export const Header: React.FC = () => {
       // this.props.changeLanguage(e.key)
       dispatch(changeLanguageActionCreator(e.key));
     }
-  }
+  };
 
   return (
-    <div className={styles['app-header']}>
+    <div className={styles["app-header"]}>
       {/* top-header */}
       <div className={styles["top-header"]}>
         <div className={styles.inner}>
@@ -44,7 +52,9 @@ export const Header: React.FC = () => {
                 {languageList.map((l) => {
                   return <Menu.Item key={l.code}>{l.name}</Menu.Item>;
                 })}
-                <Menu.Item key={"new"}>{t("header.add_new_language")}</Menu.Item>
+                <Menu.Item key={"new"}>
+                  {t("header.add_new_language")}
+                </Menu.Item>
               </Menu>
             }
             icon={<GlobalOutlined />}
@@ -92,5 +102,5 @@ export const Header: React.FC = () => {
         <Menu.Item key="16"> {t("header.insurance")} </Menu.Item>
       </Menu>
     </div>
-  )
-}
+  );
+};
