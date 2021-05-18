@@ -1,6 +1,6 @@
 /**
  * 这是一个标准的 ts + react-redux 模版代码
- * 能够写出这么高难度 
+ * 能够写出这么高难度
  * 也从侧面显示出有很高的能力
  */
 import React from "react";
@@ -10,28 +10,31 @@ import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../redux/store";
-import { withTranslation, WithTranslation } from "react-i18next"
-import { addLanguageActionCreator, changeLanguageActionCreator } from "../../redux/language/languageActions";
-import { connect } from "react-redux"
-import { Dispatch } from "redux"
+import { withTranslation, WithTranslation } from "react-i18next";
+import {
+  addLanguageActionCreator,
+  changeLanguageActionCreator,
+} from "../../redux/language/languageActions";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
 const mapStateToProps = (state: RootState) => {
   return {
-    language: state.language,
-    languageList: state.languageList
-  }
-}
+    language: state.language.languageList,
+    languageList: state.language.languageList,
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    changeLanguage: (code: "zh" | "en" ) => {
+    changeLanguage: (code: "zh" | "en") => {
       const action = changeLanguageActionCreator(code);
       dispatch(action);
     },
     addLanguage: (name: string, code: string) => {
       const action = addLanguageActionCreator(name, code);
       dispatch(action);
-    }
+    },
   };
 };
 
@@ -40,18 +43,16 @@ type PropsType = RouteComponentProps & // react-router 路由props类型
   ReturnType<typeof mapStateToProps> & // redux store 映射类型
   ReturnType<typeof mapDispatchToProps>; //redux dispath 映射类型
 
-class HeaderComponnet extends React.Component<PropsType>{
-
+class HeaderComponnet extends React.Component<PropsType> {
   menuClickHandler = (e) => {
     console.log(e);
-    if(e.key === "new"){
+    if (e.key === "new") {
       //新语言添加action
-      this.props.addLanguage("新语言","new_lang")
-
-    }else{
-      this.props.changeLanguage(e.key)
+      this.props.addLanguage("新语言", "new_lang");
+    } else {
+      this.props.changeLanguage(e.key);
     }
-  }
+  };
 
   render() {
     const { history, t } = this.props;
@@ -68,7 +69,9 @@ class HeaderComponnet extends React.Component<PropsType>{
                   {this.props.languageList.map((l) => {
                     return <Menu.Item key={l.code}>{l.name}</Menu.Item>;
                   })}
-                  <Menu.Item key={"new"}>{t("header.add_new_language")}</Menu.Item>
+                  <Menu.Item key={"new"}>
+                    {t("header.add_new_language")}
+                  </Menu.Item>
                 </Menu>
               }
               icon={<GlobalOutlined />}
@@ -89,7 +92,7 @@ class HeaderComponnet extends React.Component<PropsType>{
           <span onClick={() => history.push("/")}>
             <img src={logo} alt="logo" className={styles["App-logo"]} />
             <Typography.Title level={3} className={styles.title}>
-            {t("header.title")}
+              {t("header.title")}
             </Typography.Title>
           </span>
           <Input.Search
@@ -120,4 +123,7 @@ class HeaderComponnet extends React.Component<PropsType>{
   }
 }
 
-export const Header = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withRouter(HeaderComponnet)));
+export const Header = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(withRouter(HeaderComponnet)));
