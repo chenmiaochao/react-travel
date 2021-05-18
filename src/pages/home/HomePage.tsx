@@ -16,14 +16,45 @@ import styles from "./HomePage.module.css";
 import { withTranslation, WithTranslation } from "react-i18next";
 // import { Link } from 'react-router-dom'
 import axios from "axios";
-
+import { connect } from "react-redux";
+import { RootState } from "../../redux/store";
+import {
+  fetchRecommendProductsStartActionCreater,
+  fetchRecommendProductsSuccessActionCreater,
+  fetchRecommendProductsFailActionCreater,
+} from "../../redux/recommendProducts/recommendProductsActions";
 interface State {
   loading: boolean;
   error: string | null;
   productList: any[];
 }
 
-class HomePageComponent extends React.Component<WithTranslation, State> {
+const mapStateToProps = (state: RootState) => {
+  return {
+    loading: state.recommendProducts.loading,
+    error: state.recommendProducts.error,
+    productList: state.recommendProducts.productList,
+  };
+};
+//创立映射
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchStart: () => {
+      dispatch(fetchRecommendProductsStartActionCreater());
+    },
+    fetchSuccess: (data) => {
+      dispatch(fetchRecommendProductsSuccessActionCreater(data));
+    },
+    fetchFail: (error) => {
+      dispatch(fetchRecommendProductsFailActionCreater(error));
+    },
+  };
+};
+
+type PropsType = WithTranslation &
+  ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
+class HomePageComponent extends React.Component<PropsType, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,4 +155,7 @@ class HomePageComponent extends React.Component<WithTranslation, State> {
   }
 }
 
-export const HomePage = withTranslation()(HomePageComponent);
+export const HomePage = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTranslation()(HomePageComponent));
