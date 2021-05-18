@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Header.module.css";
-import logo from "../..//assets/logo.svg";
+import logo from "../../assets/logo.svg";
 import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
 import {
@@ -9,10 +9,11 @@ import {
   useParams,
   useRouteMatch,
 } from "react-router-dom";
-import { RootState } from "../../redux/store";
 import { useSelector } from "../../redux/hooks";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import {
+  LanguageActionTypes,
   addLanguageActionCreator,
   changeLanguageActionCreator,
 } from "../../redux/language/languageActions";
@@ -26,15 +27,15 @@ export const Header: React.FC = () => {
   const language = useSelector((state) => state.language.language);
   const languageList = useSelector((state) => state.language.languageList);
   const dispatch = useDispatch();
+  // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>();
   const { t } = useTranslation();
 
   const menuClickHandler = (e) => {
     console.log(e);
     if (e.key === "new") {
-      //新语言添加action
+      // 处理新语言添加action
       dispatch(addLanguageActionCreator("新语言", "new_lang"));
     } else {
-      // this.props.changeLanguage(e.key)
       dispatch(changeLanguageActionCreator(e.key));
     }
   };

@@ -1,8 +1,9 @@
-.app-header{
-    background-color: white  !important;
+
+.app-header {
+    background-color: white !important;
   }
   
-  .top-herader{
+  .top-header {
     height: 40px;
     padding-left: 4%;
     padding-right: 4%;
@@ -17,28 +18,25 @@
     margin-right: auto;
   }
   
-  .button-gruop {
+  .button-group {
     float: right;
     margin-top: 5px;
   }
   
-  .main-header{
+  .main-header {
     background-color: white !important;
     height: 60px;
     line-height: 60px;
     width: 88%;
-    /* margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
-   */
-  
   }
+  
   .App-logo {
     height: 60px;
     width: 60px;
     float: left;
   }
-  
-  
   
   @media (prefers-reduced-motion: no-preference) {
     .App-logo {
@@ -54,7 +52,6 @@
       transform: rotate(360deg);
     }
   }
-  
   
   .title {
     line-height: 64px !important;

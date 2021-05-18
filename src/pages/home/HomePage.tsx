@@ -2,51 +2,44 @@ import React from "react";
 import {
   Header,
   Footer,
-  SideMenu,
   Carousel,
+  SideMenu,
   ProductCollection,
-  BussinessPartners,
+  BusinessPartners,
 } from "../../components";
 import { Row, Col, Typography, Spin } from "antd";
-// import { productList1, productList2, productList3 } from "./mockups";
 import sideImage from "../../assets/images/sider_2019_12-09.png";
 import sideImage2 from "../../assets/images/sider_2019_02-04.png";
 import sideImage3 from "../../assets/images/sider_2019_02-04-2.png";
 import styles from "./HomePage.module.css";
 import { withTranslation, WithTranslation } from "react-i18next";
-// import { Link } from 'react-router-dom'
 import axios from "axios";
 import { connect } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
-  fetchRecommendProductsStartActionCreater,
-  fetchRecommendProductsSuccessActionCreater,
-  fetchRecommendProductsFailActionCreater,
+  fetchRecommendProductStartActionCreator,
+  fetchRecommendProductSuccessActionCreator,
+  fetchRecommendProductFailActionCreator,
 } from "../../redux/recommendProducts/recommendProductsActions";
-interface State {
-  loading: boolean;
-  error: string | null;
-  productList: any[];
-}
 
 const mapStateToProps = (state: RootState) => {
   return {
     loading: state.recommendProducts.loading,
     error: state.recommendProducts.error,
-    productList: state.recommendProducts.productList,
-  };
+    productList: state.recommendProducts.productList
+  }
 };
-//创立映射
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchStart: () => {
-      dispatch(fetchRecommendProductsStartActionCreater());
+      dispatch(fetchRecommendProductStartActionCreator());
     },
     fetchSuccess: (data) => {
-      dispatch(fetchRecommendProductsSuccessActionCreater(data));
+      dispatch(fetchRecommendProductSuccessActionCreator(data));
     },
     fetchFail: (error) => {
-      dispatch(fetchRecommendProductsFailActionCreater(error));
+      dispatch(fetchRecommendProductFailActionCreator(error));
     },
   };
 };
@@ -54,40 +47,24 @@ const mapDispatchToProps = (dispatch) => {
 type PropsType = WithTranslation &
   ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps>;
-class HomePageComponent extends React.Component<PropsType, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      error: null,
-      productList: [],
-    };
-  }
+
+class HomePageComponent extends React.Component<PropsType> {
 
   async componentDidMount() {
+    this.props.fetchStart()
     try {
       const { data } = await axios.get(
-        "http://123.56.149.216:8080/api/productCollections",
+        "http://123.56.149.216:8080/api/productCollections"
       );
-      this.setState({
-        loading: false,
-        error: null,
-        productList: data,
-      });
+      this.props.fetchSuccess(data)
     } catch (error) {
-      this.setState({
-        loading: false,
-        error: error.message,
-      });
+      this.props.fetchFail(error.message)
     }
   }
 
   render() {
     // console.log(this.props.t)
-    const { t } = this.props;
-    const { productList, loading, error } = this.state;
-    // console.log(productList);
-
+    const { t, productList, loading, error } = this.props;
     if (loading) {
       return (
         <Spin
@@ -102,11 +79,9 @@ class HomePageComponent extends React.Component<PropsType, State> {
         />
       );
     }
-
     if (error) {
-      return <div>网站出错</div>;
+      return <div>网站出错：{error}</div>;
     }
-
     return (
       <>
         <Header />
@@ -147,7 +122,7 @@ class HomePageComponent extends React.Component<PropsType, State> {
             sideImage={sideImage3}
             products={productList[2].touristRoutes}
           />
-          <BussinessPartners />
+          <BusinessPartners />
         </div>
         <Footer />
       </>
@@ -157,5 +132,5 @@ class HomePageComponent extends React.Component<PropsType, State> {
 
 export const HomePage = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(withTranslation()(HomePageComponent));
